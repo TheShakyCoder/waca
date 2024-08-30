@@ -1,0 +1,2 @@
+# waca
+Nuxt Content
