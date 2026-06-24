@@ -5,12 +5,66 @@ namespace App\Http\Controllers\Internal;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Meeting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class MeetingController extends Controller
 {
+    /**
+     * Week-at-a-glance calendar of meetings for the next 7 days.
+     */
+    public function week(Request $request)
+    {
+        // Allow paging forward/back a week at a time; default to the current week.
+        $offset = $request->integer('offset', 0);
+        $from   = Carbon::today()->startOfDay()->addWeeks($offset);
+        $to     = $from->copy()->addDays(6)->endOfDay();
+
+        $meetings = Meeting::with('activity')
+            ->where(function ($q) use ($from, $to) {
+                // Non-recurring within range.
+                $q->whereNull('recurrence')
+                  ->whereBetween('starts_at', [$from, $to]);
+            })
+            ->orWhere(function ($q) use ($from, $to) {
+                // Recurring that began on or before the end of the range and hasn't ended.
+                $q->whereNotNull('recurrence')
+                  ->where('starts_at', '<=', $to)
+                  ->where(function ($q2) use ($from) {
+                      $q2->whereNull('recurrence_ends_at')
+                         ->orWhere('recurrence_ends_at', '>=', $from);
+                  });
+            })
+            ->get();
+
+        $occurrences = $meetings
+            ->flatMap(fn ($m) => $m->occurrences($from, $to))
+            ->sortBy('starts_at')
+            ->values();
+
+        // Build the 7 day buckets, keyed by Y-m-d.
+        $days = [];
+        for ($i = 0; $i < 7; $i++) {
+            $day = $from->copy()->addDays($i);
+            $key = $day->toDateString();
+            $days[] = [
+                'date'     => $key,
+                'meetings' => $occurrences->filter(fn ($o) => Carbon::parse($o['starts_at'])->toDateString() === $key)->values()->all(),
+            ];
+        }
+
+        return Inertia::render('Internal/Meetings/Week', [
+            'days'   => $days,
+            'offset' => $offset,
+            'range'  => [
+                'from' => $from->toIso8601String(),
+                'to'   => $to->toIso8601String(),
+            ],
+        ]);
+    }
+
     public function index(Request $request)
     {
         $meetings = Meeting::with('activity')

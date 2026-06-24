@@ -18,6 +18,7 @@ const page = usePage();
 defineProps({
   site: { type: Object },
   stats: { type: Array, default: () => [] },
+  services: { type: Array, default: () => [] },
   testimonials: { type: Array, default: () => [] },
   featuredTestimonial: { type: Object, default: () => null },
 });
@@ -41,7 +42,7 @@ const navLinks = page.props.site.nav_links;
     <About :testimonial="featuredTestimonial" />
 
     <!-- ── SERVICES ── -->
-    <Services />
+    <Services :services="services" />
 
     <!-- ── EVENTS ── -->
     <Events />

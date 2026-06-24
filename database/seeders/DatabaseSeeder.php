@@ -133,6 +133,7 @@ class DatabaseSeeder extends Seeder
             MenuItemSeeder::class,
             StatSeeder::class,
             TestimonialSeeder::class,
+            ServiceSeeder::class,
         ]);
     }
 }

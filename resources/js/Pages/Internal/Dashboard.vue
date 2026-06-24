@@ -11,6 +11,7 @@ const allSections = {
     'media':         { label: 'Media',         icon: '🖼️' },
     'menu-items':    { label: 'Menu Items',    icon: '🔗' },
     'stats':         { label: 'Stats',         icon: '📊' },
+    'services':      { label: 'Services',      icon: '✨' },
     'testimonials':  { label: 'Testimonials',  icon: '💬' },
     'competitions':  { label: 'Competitions',  icon: '🏆' },
     'activities':    { label: 'Activities',    icon: '📅' },

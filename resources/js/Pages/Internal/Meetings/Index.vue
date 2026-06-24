@@ -44,10 +44,19 @@ const recurrenceBadge = {
         <template #header>
             <div class="flex items-center justify-between">
                 <h1 class="text-xl font-semibold text-warm-900 font-display">Meetings</h1>
-                <Link :href="route('internal.meetings.create')"
-                      class="px-4 py-2 bg-brand-600 text-white text-sm font-semibold rounded-xl hover:bg-brand-700 transition-colors shadow-sm">
-                    New Meeting
-                </Link>
+                <div class="flex items-center gap-2">
+                    <Link :href="route('internal.meetings.week')"
+                          class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-warm-600 border border-warm-200 rounded-xl hover:bg-warm-50 transition-colors">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        Week view
+                    </Link>
+                    <Link :href="route('internal.meetings.create')"
+                          class="px-4 py-2 bg-brand-600 text-white text-sm font-semibold rounded-xl hover:bg-brand-700 transition-colors shadow-sm">
+                        New Meeting
+                    </Link>
+                </div>
             </div>
         </template>
 
