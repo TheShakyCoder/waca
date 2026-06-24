@@ -10,7 +10,7 @@ use App\Concerns\TracksFieldChanges;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
-#[Fillable(['title', 'activity_id', 'starts_at', 'ends_at', 'location', 'description', 'recurrence', 'recurrence_ends_at'])]
+#[Fillable(['title', 'activity_id', 'starts_at', 'ends_at', 'location', 'fee', 'description', 'recurrence', 'recurrence_ends_at'])]
 class Meeting extends Model
 {
     use SoftDeletes, HasUuids, TracksFieldChanges;
@@ -21,6 +21,7 @@ class Meeting extends Model
             'starts_at'          => 'datetime',
             'ends_at'            => 'datetime',
             'recurrence_ends_at' => 'date',
+            'fee'                => 'decimal:2',
         ];
     }
 
@@ -81,6 +82,7 @@ class Meeting extends Model
             'starts_at'   => $start->toIso8601String(),
             'ends_at'     => $end?->toIso8601String(),
             'location'    => $this->location,
+            'fee'         => $this->fee,
             'description' => $this->description,
             'recurrence'  => $this->recurrence,
             'activity'    => $this->activity ? [

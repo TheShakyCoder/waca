@@ -56,4 +56,52 @@ class CalendarController extends Controller
             'year'        => $year,
         ]);
     }
+
+    /**
+     * Public week-at-a-glance view of meetings, starting from today.
+     */
+    public function week(Request $request)
+    {
+        $offset = $request->integer('offset', 0);
+        $from   = Carbon::today()->startOfDay()->addWeeks($offset);
+        $to     = $from->copy()->addDays(6)->endOfDay();
+
+        $meetings = Meeting::with('activity')
+            ->where(function ($q) use ($from, $to) {
+                $q->whereNull('recurrence')->whereBetween('starts_at', [$from, $to]);
+            })
+            ->orWhere(function ($q) use ($from, $to) {
+                $q->whereNotNull('recurrence')
+                  ->where('starts_at', '<=', $to)
+                  ->where(function ($q2) use ($from) {
+                      $q2->whereNull('recurrence_ends_at')
+                         ->orWhere('recurrence_ends_at', '>=', $from);
+                  });
+            })
+            ->get();
+
+        $occurrences = $meetings
+            ->flatMap(fn ($m) => $m->occurrences($from, $to))
+            ->sortBy('starts_at')
+            ->values();
+
+        $days = [];
+        for ($i = 0; $i < 7; $i++) {
+            $day = $from->copy()->addDays($i);
+            $key = $day->toDateString();
+            $days[] = [
+                'date'     => $key,
+                'meetings' => $occurrences->filter(fn ($o) => Carbon::parse($o['starts_at'])->toDateString() === $key)->values()->all(),
+            ];
+        }
+
+        return Inertia::render('Meetings/Index', [
+            'days'   => $days,
+            'offset' => $offset,
+            'range'  => [
+                'from' => $from->toIso8601String(),
+                'to'   => $to->toIso8601String(),
+            ],
+        ]);
+    }
 }

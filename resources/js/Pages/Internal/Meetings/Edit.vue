@@ -18,6 +18,7 @@ const form = useForm({
     starts_at:          toLocalInput(props.meeting.starts_at),
     ends_at:            toLocalInput(props.meeting.ends_at),
     location:           props.meeting.location ?? '',
+    fee:                props.meeting.fee ?? '',
     description:        props.meeting.description ?? '',
     recurrence:         props.meeting.recurrence ?? '',
     recurrence_ends_at: props.meeting.recurrence_ends_at ?? '',
@@ -30,6 +31,7 @@ function submit() {
         recurrence:         data.recurrence || null,
         recurrence_ends_at: data.recurrence_ends_at || null,
         ends_at:            data.ends_at || null,
+        fee:                data.fee === '' ? null : data.fee,
     })).put(route('internal.meetings.update', props.meeting.id));
 }
 
@@ -99,12 +101,25 @@ function destroy() {
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-warm-700 mb-1.5">Location (optional)</label>
-                    <input v-model="form.location" type="text" placeholder="e.g. Main Hall"
-                           class="w-full px-4 py-2.5 text-sm border rounded-xl bg-white text-warm-900
-                                  focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition placeholder-warm-300"
-                           :class="form.errors.location ? 'border-rose-300' : 'border-warm-200'" />
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-warm-700 mb-1.5">Location (optional)</label>
+                        <input v-model="form.location" type="text" placeholder="e.g. Main Hall"
+                               class="w-full px-4 py-2.5 text-sm border rounded-xl bg-white text-warm-900
+                                      focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition placeholder-warm-300"
+                               :class="form.errors.location ? 'border-rose-300' : 'border-warm-200'" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-warm-700 mb-1.5">Fee (optional)</label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-warm-400">£</span>
+                            <input v-model="form.fee" type="number" step="0.01" min="0" placeholder="0.00"
+                                   class="w-full pl-7 pr-4 py-2.5 text-sm border rounded-xl bg-white text-warm-900
+                                          focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition placeholder-warm-300"
+                                   :class="form.errors.fee ? 'border-rose-300' : 'border-warm-200'" />
+                        </div>
+                        <p v-if="form.errors.fee" class="mt-1.5 text-xs text-rose-600">{{ form.errors.fee }}</p>
+                    </div>
                 </div>
 
                 <div>

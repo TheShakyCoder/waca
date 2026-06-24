@@ -105,6 +105,9 @@ function go(offset) {
                         <p class="text-[11px] font-semibold text-brand-700">{{ time(m.starts_at) }}</p>
                         <p class="text-xs font-medium text-warm-800 leading-snug line-clamp-2">{{ m.title }}</p>
                         <p v-if="m.location" class="text-[11px] text-warm-400 truncate mt-0.5">📍 {{ m.location }}</p>
+                        <p v-if="m.fee !== null && m.fee !== undefined" class="text-[11px] text-warm-500 truncate">
+                            {{ Number(m.fee) === 0 ? 'Free' : '£' + Number(m.fee).toFixed(2) }}
+                        </p>
                         <p v-if="m.activity" class="text-[11px] text-warm-400 truncate">{{ m.activity.title }}</p>
                     </Link>
                 </div>

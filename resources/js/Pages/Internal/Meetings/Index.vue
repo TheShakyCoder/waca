@@ -31,6 +31,11 @@ function formatDate(d) {
     return new Date(d).toLocaleString();
 }
 
+function formatFee(fee) {
+    if (fee === null || fee === undefined || fee === '') return '—';
+    return Number(fee) === 0 ? 'Free' : `£${Number(fee).toFixed(2)}`;
+}
+
 const recurrenceBadge = {
     weekly:      'bg-blue-100 text-blue-700',
     fortnightly: 'bg-purple-100 text-purple-700',
@@ -77,6 +82,7 @@ const recurrenceBadge = {
                         <th class="px-4 py-3 font-medium">Activity</th>
                         <th class="px-4 py-3 font-medium">Starts</th>
                         <th class="px-4 py-3 font-medium">Location</th>
+                        <th class="px-4 py-3 font-medium">Fee</th>
                         <th class="px-4 py-3 font-medium">Recurrence</th>
                         <th class="px-4 py-3 font-medium"></th>
                     </tr>
@@ -87,6 +93,7 @@ const recurrenceBadge = {
                         <td class="px-4 py-3 text-gray-500">{{ m.activity?.title ?? '—' }}</td>
                         <td class="px-4 py-3 text-gray-500 whitespace-nowrap">{{ formatDate(m.starts_at) }}</td>
                         <td class="px-4 py-3 text-gray-500">{{ m.location ?? '—' }}</td>
+                        <td class="px-4 py-3 text-gray-500 whitespace-nowrap">{{ formatFee(m.fee) }}</td>
                         <td class="px-4 py-3">
                             <span v-if="m.recurrence"
                                   class="px-2 py-0.5 rounded-full text-xs font-medium"
@@ -100,7 +107,7 @@ const recurrenceBadge = {
                         </td>
                     </tr>
                     <tr v-if="!meetings.data.length">
-                        <td colspan="6" class="px-4 py-8 text-center text-gray-400">No meetings yet.</td>
+                        <td colspan="7" class="px-4 py-8 text-center text-gray-400">No meetings yet.</td>
                     </tr>
                 </tbody>
             </table>

@@ -19,6 +19,30 @@ Route::get('/', function () {
             ->where('featured', true)
             ->orderBy('order')
             ->first(),
+        'events' => (function () {
+            $from = \Carbon\Carbon::today()->startOfDay();
+            $to   = $from->copy()->addYear();
+
+            $meetings = \App\Models\Meeting::with('activity')
+                ->where(function ($q) use ($from, $to) {
+                    $q->whereNull('recurrence')->whereBetween('starts_at', [$from, $to]);
+                })
+                ->orWhere(function ($q) use ($from, $to) {
+                    $q->whereNotNull('recurrence')
+                      ->where('starts_at', '<=', $to)
+                      ->where(function ($q2) use ($from) {
+                          $q2->whereNull('recurrence_ends_at')
+                             ->orWhere('recurrence_ends_at', '>=', $from);
+                      });
+                })
+                ->get();
+
+            return $meetings
+                ->flatMap(fn ($m) => $m->occurrences($from, $to))
+                ->sortBy('starts_at')
+                ->take(4)
+                ->values();
+        })(),
     ]);
 })->name('home');
 
@@ -32,6 +56,7 @@ Route::middleware('auth')->post('/competitions/{slug}/submit', [\App\Http\Contro
 Route::get('/api/facebook-feed', [FacebookFeedController::class, 'index'])->name('facebook.feed');
 
 Route::get('/calendar', [\App\Http\Controllers\CalendarController::class, 'index'])->name('calendar');
+Route::get('/meetings', [\App\Http\Controllers\CalendarController::class, 'week'])->name('meetings');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {

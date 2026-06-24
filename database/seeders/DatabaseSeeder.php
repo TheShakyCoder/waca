@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             'name' => 'Admin User',
-            'email' => 'support@fig.limited',
+            'email' => 'support@fig.ltd.uk',
             'email_verified_at' => now(),
             'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
             'is_admin' => true
@@ -134,6 +134,7 @@ class DatabaseSeeder extends Seeder
             StatSeeder::class,
             TestimonialSeeder::class,
             ServiceSeeder::class,
+            TimetableSeeder::class,
         ]);
     }
 }
