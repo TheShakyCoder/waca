@@ -1,65 +1,67 @@
 <script setup>
-import { Head, usePage } from '@inertiajs/vue3';
-import FacebookFeed from '@/Components/FacebookFeed.vue';
-import Hero from '@/Pages/Home/Partials/Hero.vue';
-import Stats from '@/Pages/Home/Partials/Stats.vue';
-import About from '@/Pages/Home/Partials/About.vue';
-import Services from '@/Pages/Home/Partials/Services.vue';
-import Events from '@/Pages/Home/Partials/Events.vue';
-import News from '@/Pages/Home/Partials/News.vue';
-import Volunteer from '@/Pages/Home/Partials/Volunteer.vue';
-import Contact from '@/Pages/Home/Partials/Contact.vue';
-import Header from '@/Layouts/Partials/Header.vue';
-import Footer from '@/Layouts/Partials/Footer.vue';
+import { Head, usePage } from "@inertiajs/vue3";
+import FacebookFeed from "@/Components/FacebookFeed.vue";
+import Hero from "@/Pages/Home/Partials/Hero.vue";
+import Stats from "@/Pages/Home/Partials/Stats.vue";
+import Testimonials from "@/Pages/Home/Partials/Testimonials.vue";
+import About from "@/Pages/Home/Partials/About.vue";
+import Services from "@/Pages/Home/Partials/Services.vue";
+import Events from "@/Pages/Home/Partials/Events.vue";
+import News from "@/Pages/Home/Partials/News.vue";
+import Volunteer from "@/Pages/Home/Partials/Volunteer.vue";
+import Contact from "@/Pages/Home/Partials/Contact.vue";
+import Header from "@/Layouts/Partials/Header.vue";
+import Footer from "@/Layouts/Partials/Footer.vue";
 
 const page = usePage();
 
 defineProps({
-    canLogin: { type: Boolean },
-    canRegister: { type: Boolean },
-    site: { type: Object },
+  site: { type: Object },
+  stats: { type: Array, default: () => [] },
+  testimonials: { type: Array, default: () => [] },
+  featuredTestimonial: { type: Object, default: () => null },
 });
 
 const navLinks = page.props.site.nav_links;
 </script>
 
 <template>
+  <Head :title="site.fullname" />
 
-    <Head :title="site.fullname" />
+  <div class="font-sans antialiased text-warm-800 bg-white">
+    <Header :navLinks="navLinks" />
 
-    <div class="font-sans antialiased text-warm-800 bg-white">
+    <!-- ── HERO ── -->
+    <Hero :site="site" />
 
-        <Header :navLinks="navLinks" :canLogin="canLogin" :canRegister="canRegister" />
+    <!-- ── STATS ── -->
+    <Stats :stats="stats" />
 
-        <!-- ── HERO ── -->
-        <Hero :site="site" />
+    <!-- ── ABOUT ── -->
+    <About :testimonial="featuredTestimonial" />
 
-        <!-- ── STATS ── -->
-        <Stats />
+    <!-- ── SERVICES ── -->
+    <Services />
 
-        <!-- ── ABOUT ── -->
-        <About />
+    <!-- ── EVENTS ── -->
+    <Events />
 
-        <!-- ── SERVICES ── -->
-        <Services />
+    <!-- ── NEWS ── -->
+    <News />
 
-        <!-- ── EVENTS ── -->
-        <Events />
+    <!-- ── TESTIMONIALS ── -->
+    <Testimonials :testimonials="testimonials" />
 
-        <!-- ── NEWS ── -->
-        <News />
+    <!-- ── FACEBOOK FEED ── -->
+    <FacebookFeed />
 
-        <!-- ── FACEBOOK FEED ── -->
-        <FacebookFeed />
+    <!-- ── VOLUNTEER CTA ── -->
+    <Volunteer />
 
-        <!-- ── VOLUNTEER CTA ── -->
-        <Volunteer />
+    <!-- ── CONTACT ── -->
+    <Contact :site="site" />
 
-        <!-- ── CONTACT ── -->
-        <Contact :site="site" />
-
-        <!-- ── FOOTER ── -->
-        <Footer :navLinks="navLinks" />
-
-    </div>
+    <!-- ── FOOTER ── -->
+    <Footer :navLinks="navLinks" />
+  </div>
 </template>

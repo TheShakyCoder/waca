@@ -131,6 +131,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MenuItemSeeder::class,
+            StatSeeder::class,
+            TestimonialSeeder::class,
         ]);
     }
 }

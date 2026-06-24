@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(ddev artisan:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(xargs sed -i '' 's#/admin/stats#/internal/stats#g')",
+      "Bash(ddev exec *)"
     ]
   }
 }

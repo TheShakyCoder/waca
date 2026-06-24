@@ -5,8 +5,6 @@ import Footer from '@/Layouts/Partials/Footer.vue';
 
 const props = defineProps({
     posts:       { type: Object, required: true },
-    canLogin:    { type: Boolean },
-    canRegister: { type: Boolean },
 });
 
 const page = usePage();
@@ -33,7 +31,7 @@ function tagColour(index) {
 
     <div class="font-sans antialiased text-warm-800 bg-white">
 
-        <Header :navLinks="navLinks" :canLogin="canLogin" :canRegister="canRegister" />
+        <Header :navLinks="navLinks" />
 
         <!-- ── PAGE HERO BANNER ── -->
         <section class="relative overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 text-white">

@@ -24,8 +24,6 @@ class PostController extends Controller
 
         return Inertia::render('Post/Index', [
             'posts'       => $posts,
-            'canLogin'    => Route::has('login'),
-            'canRegister' => Route::has('register'),
         ]);
     }
 
@@ -37,8 +35,6 @@ class PostController extends Controller
             'post'        => array_merge($post->toArray(), [
                 'thumbnail_url' => $post->thumbnail?->url,
             ]),
-            'canLogin'    => Route::has('login'),
-            'canRegister' => Route::has('register'),
         ]);
     }
 }

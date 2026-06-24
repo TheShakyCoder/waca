@@ -18,8 +18,6 @@ class PageController extends Controller
             'page'        => array_merge($page->toArray(), [
                 'thumbnail_url' => $page->thumbnail?->url,
             ]),
-            'canLogin'    => Route::has('login'),
-            'canRegister' => Route::has('register'),
         ]);
     }
 }

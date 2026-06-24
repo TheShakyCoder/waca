@@ -8,8 +8,16 @@ use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return Inertia::render('Home/Index', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+        'stats' => \App\Models\Stat::orderBy('order')->get(['value', 'label', 'icon']),
+        'testimonials' => \App\Models\Testimonial::select(['title', 'comment', 'name'])
+            ->where('homepage', true)
+            ->orderBy('order')
+            ->limit(3)
+            ->get(),
+        'featuredTestimonial' => \App\Models\Testimonial::select(['title', 'comment', 'name'])
+            ->where('featured', true)
+            ->orderBy('order')
+            ->first(),
     ]);
 })->name('home');
 
@@ -47,6 +55,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('posts', \App\Http\Controllers\Internal\PostController::class);
         Route::resource('activities', \App\Http\Controllers\Internal\ActivityController::class);
         Route::resource('meetings', \App\Http\Controllers\Internal\MeetingController::class)->except(['show']);
+        Route::resource('stats', \App\Http\Controllers\Internal\StatController::class)->except(['show']);
+        Route::resource('testimonials', \App\Http\Controllers\Internal\TestimonialController::class)->except(['show']);
         Route::get('page-views', [\App\Http\Controllers\Internal\PageViewController::class, 'index'])->name('page-views.index');
         Route::get('field-changes', [\App\Http\Controllers\Internal\FieldChangeController::class, 'index'])->name('field-changes.index');
     });

@@ -31,8 +31,6 @@ class CompetitionController extends Controller
 
         return Inertia::render('Competition/Index', [
             'competitions' => $competitions,
-            'canLogin'     => Route::has('login'),
-            'canRegister'  => Route::has('register'),
         ]);
     }
 
@@ -77,8 +75,6 @@ class CompetitionController extends Controller
             ]),
             'submissions'    => $submissions,
             'userSubmission' => $userSubmission,
-            'canLogin'       => Route::has('login'),
-            'canRegister'    => Route::has('register'),
         ]);
     }
 

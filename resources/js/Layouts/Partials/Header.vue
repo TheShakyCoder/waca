@@ -4,8 +4,6 @@ import { Link } from '@inertiajs/vue3';
 
 defineProps({
     navLinks: Array,
-    canLogin: Boolean,
-    canRegister: Boolean,
     auth: Object,
 });
 
@@ -77,15 +75,15 @@ onUnmounted(() => {
 
                     <!-- CTA buttons -->
                     <div class="hidden lg:flex items-center gap-3">
-                        <Link v-if="canLogin && !$page.props.auth?.user" :href="route('login')"
+                        <Link v-if="!$page.props.auth?.user" :href="route('login')"
                             class="px-2 py-2 text-sm font-medium text-brand-700 hover:text-brand-800 transition-colors">
                         Login
                         </Link>
-                        <Link v-if="canRegister && !$page.props.auth?.user" :href="route('register')"
+                        <Link v-if="!$page.props.auth?.user" :href="route('register')"
                             class="px-2 py-2 text-sm font-medium text-brand-700 hover:text-brand-800 transition-colors">
                         Register
                         </Link>
-                        <Link v-if="canLogin && $page.props.auth?.user" :href="route('dashboard')"
+                        <Link v-if="$page.props.auth?.user" :href="route('dashboard')"
                             class="px-2 py-2 text-sm font-medium text-brand-700 hover:text-brand-800 transition-colors">
                         Dashboard
                         </Link>
@@ -138,7 +136,7 @@ onUnmounted(() => {
                     </div>
                 </template>
                 <div class="pt-2 border-t border-warm-100 flex flex-col gap-2">
-                    <Link v-if="canLogin && !$page.props.auth?.user" :href="route('login')"
+                    <Link v-if="!$page.props.auth?.user" :href="route('login')"
                         class="block px-4 py-2.5 text-sm font-medium text-brand-700 rounded-lg hover:bg-brand-50 transition-colors">
                     Login
                     </Link>

@@ -8,8 +8,6 @@ const navLinks = page.props.site.nav_links;
 
 defineProps({
     competitions: { type: Array,   required: true },
-    canLogin:     { type: Boolean },
-    canRegister:  { type: Boolean },
 });
 
 const statusLabel = {
@@ -24,7 +22,7 @@ const statusLabel = {
 
     <div class="font-sans antialiased text-warm-800 bg-white">
 
-        <Header :navLinks="navLinks" :canLogin="canLogin" :canRegister="canRegister" />
+        <Header :navLinks="navLinks" />
 
         <!-- Hero -->
         <section class="relative overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 text-white">

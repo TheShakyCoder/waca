@@ -13,8 +13,6 @@ const props = defineProps({
     competition:    { type: Object,  required: true },
     submissions:    { type: Array,   required: true },
     userSubmission: { type: Object,  default: null },
-    canLogin:       { type: Boolean },
-    canRegister:    { type: Boolean },
 });
 
 const form = useForm({
@@ -53,7 +51,7 @@ const otherSubmissions = props.submissions.filter(s => !s.is_winner);
 
     <div class="font-sans antialiased text-warm-800 bg-white">
 
-        <Header :navLinks="navLinks" :canLogin="canLogin" :canRegister="canRegister" />
+        <Header :navLinks="navLinks" />
 
         <!-- Hero -->
         <section class="relative overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 text-white">

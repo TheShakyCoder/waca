@@ -4,6 +4,9 @@ import { Link, usePage } from '@inertiajs/vue3';
 
 const page = usePage();
 
+defineProps({
+    testimonial: { type: Object, default: () => null },
+});
 </script>
 
 <template>
@@ -36,7 +39,14 @@ const page = usePage();
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-brand-600 rounded-2xl p-6 text-white col-span-2">
+                    <div v-if="testimonial" class="bg-brand-600 rounded-2xl p-6 text-white col-span-2">
+                        <p class="text-2xl font-display font-bold mb-2">"{{ testimonial.title }}"</p>
+                        <p class="text-white/80 text-sm leading-relaxed">
+                            "{{ testimonial.comment }}"
+                        </p>
+                        <p class="text-white/60 text-xs mt-3 font-medium">— {{ testimonial.name }}</p>
+                    </div>
+                    <div v-else class="bg-brand-600 rounded-2xl p-6 text-white col-span-2">
                         <p class="text-2xl font-display font-bold mb-2">"A true community gem"</p>
                         <p class="text-white/80 text-sm leading-relaxed">
                             "I've been coming to the centre for 15 years. It's changed my life — I made friends here,

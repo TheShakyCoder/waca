@@ -10,6 +10,8 @@ const allSections = {
     'pages':         { label: 'Pages',         icon: '📄' },
     'media':         { label: 'Media',         icon: '🖼️' },
     'menu-items':    { label: 'Menu Items',    icon: '🔗' },
+    'stats':         { label: 'Stats',         icon: '📊' },
+    'testimonials':  { label: 'Testimonials',  icon: '💬' },
     'competitions':  { label: 'Competitions',  icon: '🏆' },
     'activities':    { label: 'Activities',    icon: '📅' },
     'meetings':      { label: 'Meetings',      icon: '🗓️' },
