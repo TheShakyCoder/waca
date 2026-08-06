@@ -26,7 +26,8 @@
       "Bash(node -p \"require\\('./node_modules/tailwindcss/package.json'\\).version\")",
       "Bash(npm install *)",
       "Bash(rtk ls *)",
-      "Bash(rtk read *)"
+      "Bash(rtk read *)",
+      "Bash(apk search *)"
     ]
   }
 }

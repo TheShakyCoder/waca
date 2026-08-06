@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # ── Stage 2: Production — PHP-FPM + nginx (PHP 8.4) ───────────────────────
-# NOTE: php:*-fpm-alpine already ships www-data user/group — don't recreate them.
+# NOTE: php:*-fpm-alpine already ships www-data, GD, bcmath, pdo_mysql, etc.
 FROM php:8.4-fpm-alpine
 
 LABEL maintainer="Sharif Khan"
@@ -21,19 +21,18 @@ LABEL maintainer="Sharif Khan"
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 
-# Force production mode during build (overrides Coolify's APP_ENV=development warning)
 ENV APP_ENV=production \
     APP_DEBUG=false \
     APP_NAME="waca"
 
-# ── System packages & PHP extensions ────────────────────────────────────────
+# ── System packages & PECL extensions ───────────────────────────────────────
+# PHP-FPM Alpine image has GD, bcmath, pdo_mysql pre-compiled — no dev headers needed.
 RUN apk add --no-cache \
-      libpng-dev libjpeg-dev libwebp-dev freetype-dev oniguruma-dev zip unzip curl \
-      nginx supervisor tini \
-  && docker-php-ext-install pdo_mysql mbstring tokenizer xml pcntl bcmath gd ctype json fileinfo iconv sodium opcache \
+      imagemagick imagemagick-dev \
+      nginx supervisor tini zip unzip curl \
   && pecl install redis gmp imagick \
+  && docker-php-ext-install pdo_mysql mbstring tokenizer xml pcntl bcmath gd ctype json fileinfo iconv sodium opcache \
   && docker-php-ext-enable redis gmp imagick opcache \
-  && apk del --purge -r libpng-dev libjpeg-dev libwebp-dev freetype-dev oniguruma-dev \
   && rm -rf /var/cache/apk/*
 
 # ── Composer (multi-stage, only needed at build time) ──────────────────────
