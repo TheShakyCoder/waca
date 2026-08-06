@@ -13,7 +13,18 @@
       "Bash(docker history *)",
       "Bash(docker inspect *)",
       "Bash(python3 -c \"import sys,json; tags=json.load\\(sys.stdin\\); [print\\(t['name']\\) for t in tags.get\\('results',[]\\)]\")",
-      "Bash(python3 -c \"import sys,json; tags=json.load\\(sys.stdin\\); [print\\(t['name']\\) for t in sorted\\(tags.get\\('results',[]\\), key=lambda x:x['name'], reverse=True\\)[:15]]\")"
+      "Bash(python3 -c \"import sys,json; tags=json.load\\(sys.stdin\\); [print\\(t['name']\\) for t in sorted\\(tags.get\\('results',[]\\), key=lambda x:x['name'], reverse=True\\)[:15]]\")",
+      "Bash(grep -E '\\\\.\\(css|scss|blade\\\\.vue|vue|blade\\\\.php\\)$')",
+      "Bash(grep -vE '\\\\.\\(vue|blade\\)$')",
+      "Bash(ddev status *)",
+      "Bash(ddev ssh *)",
+      "Bash(ddev describe *)",
+      "Bash(ddev stop *)",
+      "Bash(ddev start *)",
+      "Bash(ddev logs *)",
+      "Bash(node -E \"require\\('/Users/sharifkhan/Sites/waca/node_modules/tailwindcss/package.json'\\).version\")",
+      "Bash(node -p \"require\\('./node_modules/tailwindcss/package.json'\\).version\")",
+      "Bash(npm install *)"
     ]
   }
 }
