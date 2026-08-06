@@ -10,6 +10,7 @@ const form = useForm({
     name:     props.testimonial.name,
     order:    props.testimonial.order ?? 0,
     homepage: !!props.testimonial.homepage,
+    featured: !!props.testimonial.featured,
 });
 
 function submit() {
@@ -75,11 +76,18 @@ function submit() {
                                    :class="form.errors.order ? 'border-rose-300' : 'border-warm-200'" />
                             <p v-if="form.errors.order" class="mt-1.5 text-xs text-rose-600">{{ form.errors.order }}</p>
                         </div>
-                        <label class="flex items-center gap-2.5 mt-7 cursor-pointer select-none">
-                            <input v-model="form.homepage" type="checkbox"
-                                   class="w-4 h-4 rounded border-warm-300 text-brand-600 focus:ring-brand-400" />
-                            <span class="text-sm font-medium text-warm-700">Show on homepage</span>
-                        </label>
+                        <div class="mt-7 space-y-3">
+                            <label class="flex items-center gap-2.5 cursor-pointer select-none">
+                                <input v-model="form.homepage" type="checkbox"
+                                       class="w-4 h-4 rounded border-warm-300 text-brand-600 focus:ring-brand-400" />
+                                <span class="text-sm font-medium text-warm-700">Show on homepage</span>
+                            </label>
+                            <label class="flex items-center gap-2.5 cursor-pointer select-none">
+                                <input v-model="form.featured" type="checkbox"
+                                       class="w-4 h-4 rounded border-warm-300 text-brand-600 focus:ring-brand-400" />
+                                <span class="text-sm font-medium text-warm-700">Featured</span>
+                            </label>
+                        </div>
                     </div>
 
                     <div class="flex items-center gap-3 pt-2">

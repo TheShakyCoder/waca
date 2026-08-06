@@ -37,7 +37,7 @@ onUnmounted(() => {
 
                     <!-- Logo -->
                     <a href="/" class="flex items-center gap-3 shrink-0">
-                        <img src="/media/logo.png" alt="WACA Logo" class="h-14 w-auto" />
+                        <img src="/media/logo-circle-background.png" alt="WACA Logo" class="h-14 w-auto" />
                         <div class="hidden md:block">
                             <p class="text-lg font-semibold text-brand-700 leading-tight font-display">Woodvale
                                 &amp; Ainsdale</p>
