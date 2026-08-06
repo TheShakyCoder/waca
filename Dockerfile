@@ -1,6 +1,9 @@
 # ── Stage 1: Frontend build (Node.js 20) ───────────────────────────────────
 FROM node:20-alpine AS frontend
 
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
 WORKDIR /app
 
 COPY package.json package-lock.json ./
@@ -10,6 +13,7 @@ COPY . .
 RUN npm run build
 
 # ── Stage 2: Production — PHP-FPM + nginx (PHP 8.4) ───────────────────────
+# NOTE: php:*-fpm-alpine already ships www-data user/group — don't recreate them.
 FROM php:8.4-fpm-alpine
 
 LABEL maintainer="Sharif Khan"
@@ -17,10 +21,13 @@ LABEL maintainer="Sharif Khan"
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 
+# Force production mode during build (overrides Coolify's APP_ENV=development warning)
+ENV APP_ENV=production \
+    APP_DEBUG=false \
+    APP_NAME="waca"
+
 # ── System packages & PHP extensions ────────────────────────────────────────
-RUN addgroup -g "$GROUP_ID" www-data && \
-    adduser -u "$USER_ID" -G www-data -s /bin/sh -D www-data && \
-    apk add --no-cache \
+RUN apk add --no-cache \
       libpng-dev libjpeg-dev libwebp-dev freetype-dev oniguruma-dev zip unzip curl \
       nginx supervisor tini \
   && docker-php-ext-install pdo_mysql mbstring tokenizer xml pcntl bcmath gd ctype json fileinfo iconv sodium opcache \
@@ -51,7 +58,7 @@ COPY docker/www.conf         /usr/local/etc/php-fpm.d/www.conf
 RUN mkdir -p /var/log/supervisor /run/php-fpm /var/run
 COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
 
-# ── Permissions ─────────────────────────────────────────────────────────────
+# ── Permissions (www-data already exists in the PHP Alpine base) ────────────
 RUN chown -R www-data:www-data app bootstrap/cache storage \
   && chmod -R 775      storage bootstrap/cache
 
