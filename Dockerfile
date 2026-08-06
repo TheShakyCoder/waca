@@ -1,12 +1,12 @@
 # ---------------------------------------------------------------------------
 # Multi-stage build — Laravel + Inertia SSR (PHP-FPM + nginx + Node.js)
 #
-# Base:     nikolaik/php-nodejs:8.3-fpm-noble  (PHP 8.3 FPM + Node 20 + nginx)
+# Base:     nikolaik/php-nodejs:8.4-fpm-noble  (PHP 8.4 FPM + Node 20 + nginx)
 # Stages:   deps → builder → production
 # ---------------------------------------------------------------------------
 
 # ---- 1. deps — install PHP extensions & Composer ----------------------------
-FROM nikolaik/php-nodejs:8.3-fpm-noble AS deps
+FROM nikolaik/php-nodejs:8.4-fpm-noble AS deps
 
 ARG IMAGE_VERSION=latest
 LABEL org.opencontainers.image.version="${IMAGE_VERSION}"
