@@ -24,7 +24,9 @@
       "Bash(ddev logs *)",
       "Bash(node -E \"require\\('/Users/sharifkhan/Sites/waca/node_modules/tailwindcss/package.json'\\).version\")",
       "Bash(node -p \"require\\('./node_modules/tailwindcss/package.json'\\).version\")",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(rtk ls *)",
+      "Bash(rtk read *)"
     ]
   }
 }

@@ -6,6 +6,7 @@ node_modules/
 storage/*.key
 public/hot
 public/storage
+public/build
 bootstrap/cache/*
 
 # IDE / editor
