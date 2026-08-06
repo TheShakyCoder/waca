@@ -1,0 +1,44 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Build artifacts
+storage/*.key
+public/hot
+public/storage
+bootstrap/cache/*
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docs
+docs/
+README.md
+LICENSE
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Development
+.env
+.env.*
+.ddev/
+
+# Nixpacks (no longer used)
+nixpacks*.toml
+nixpacks*.sh
+nixpacks*.conf

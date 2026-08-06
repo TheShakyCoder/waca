@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 #
-# Container entrypoint used by Nixpacks on Coolify.
+# Container entrypoint — Laravel boot steps then nginx / php-fpm.
 #
 # Runs DB-dependent and env-dependent tasks at container boot (where the
-# database service is reachable), then starts php-fpm and nginx using
-# the self-contained config shipped in this repo (nixpacks-nginx.conf).
+# database service is reachable), then starts php-fpm and nginx using the
+# self-contained config shipped in this repo (nixpacks-nginx.conf → /etc/nginx.conf).
 #
-# Invoked via `[start] cmd = "bash /app/nixpacks-start.sh"` in nixpacks.toml.
 
 set -euo pipefail
 
@@ -29,17 +28,13 @@ php artisan view:cache
 php artisan event:cache
 
 echo "==> [startup] preparing nginx temp dirs"
-# Our nginx.conf points these at /tmp so nginx doesn't need /var/cache
-# write access. Make sure they exist.
 mkdir -p /tmp/nginx-client-body /tmp/nginx-proxy /tmp/nginx-fastcgi /tmp/nginx-uwsgi /tmp/nginx-scgi
 
 echo "==> [startup] starting php-fpm (background)"
-# Nixpacks' bundled php-fpm.conf listens on 127.0.0.1:9000, which is
-# what our nginx config's fastcgi_pass targets.
-php-fpm -y /assets/php-fpm.conf --daemonize
+# nikolaik/php-nodejs ships PHP-FPM configured on 127.0.0.1:9000 —
+# exactly what nixpacks-nginx.conf's fastcgi_pass expects.
+php-fpm --daemonize
 
-echo "==> [startup] exec nginx with repo-provided config"
-# Use our own nginx config — bypasses the Nixpacks PHP provider's
-# template, which was producing duplicate location blocks on Laravel.
-# `daemon off;` lives inside the config file itself, so no -g flag needed.
-exec nginx -c /app/nixpacks-nginx.conf
+echo "==> [startup] exec nginx"
+# /etc/nginx.conf has `daemon off;` built in, so no -g flag needed.
+exec nginx -c /etc/nginx.conf
