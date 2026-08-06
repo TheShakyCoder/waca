@@ -1,72 +1,116 @@
-# ── Stage 1: Frontend build (Node.js 20) ───────────────────────────────────
-FROM node:20-alpine AS frontend
+# syntax=docker/dockerfile:1
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+# ── Stage 1: Frontend build ────────────────────────────────────────────────
+FROM node:20-alpine AS frontend
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci --ignore-scripts
+# Keep devDependencies available because Vite and related build tools normally
+# live there. Avoid NODE_ENV=production until after the assets are built.
+RUN npm ci
 
 COPY . .
 RUN npm run build
 
-# ── Stage 2: Production — PHP-FPM + nginx (PHP 8.4) ───────────────────────
-# NOTE: php:*-fpm-alpine already ships www-data, GD, bcmath, pdo_mysql, etc.
-FROM php:8.4-fpm-alpine
+# ── Stage 2: Shared PHP runtime ────────────────────────────────────────────
+FROM php:8.4-fpm-alpine AS php-base
 
 LABEL maintainer="Sharif Khan"
-
-ARG USER_ID=1000
-ARG GROUP_ID=1000
 
 ENV APP_ENV=production \
     APP_DEBUG=false \
     APP_NAME="waca"
 
-# ── System packages & PECL extensions ───────────────────────────────────────
-# PHP-FPM Alpine image has GD, bcmath, pdo_mysql pre-compiled — no dev headers needed.
-RUN apk add --no-cache \
-      imagemagick imagemagick-dev \
-      nginx supervisor tini zip unzip curl \
-  && pecl install redis gmp imagick \
-  && docker-php-ext-install pdo_mysql mbstring tokenizer xml pcntl bcmath gd ctype json fileinfo iconv sodium opcache \
-  && docker-php-ext-enable redis gmp imagick opcache \
-  && rm -rf /var/cache/apk/*
+# This helper installs the correct Alpine build/runtime dependencies for each
+# extension and removes temporary compiler packages afterwards.
+COPY --from=ghcr.io/mlocati/php-extension-installer:2.11.12 \
+    /usr/bin/install-php-extensions \
+    /usr/local/bin/install-php-extensions
 
-# ── Composer (multi-stage, only needed at build time) ──────────────────────
+RUN apk add --no-cache \
+      curl \
+      imagemagick \
+      nginx \
+      supervisor \
+      tini \
+      unzip \
+      zip \
+  && install-php-extensions \
+      bcmath \
+      gd \
+      gmp \
+      imagick \
+      pcntl \
+      pdo_mysql \
+      redis \
+      zip
+
 WORKDIR /app
+
+# ── Stage 3: Composer dependencies ────────────────────────────────────────
+FROM php-base AS vendor
+
 ENV COMPOSER_ALLOW_SUPERUSER=1
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader && rm -rf ~/.composer
 
-# ── Application source ──────────────────────────────────────────────────────
+# Laravel's Composer scripts call artisan, which is not present yet at this
+# point. Install packages first without scripts so this layer remains cacheable.
+RUN composer install \
+      --no-dev \
+      --no-interaction \
+      --no-progress \
+      --no-scripts \
+      --optimize-autoloader \
+      --prefer-dist
+
 COPY . .
-COPY --from=frontend /app/public/build ./public/build   # Vite output — not local
 
-# Persist Laravel caches so artisan doesn't re-warm each request.
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
+# Rebuild the optimized autoloader now that application classes exist.
+RUN composer dump-autoload \
+      --no-dev \
+      --no-interaction \
+      --no-scripts \
+      --optimize
 
-# ── Runtime configs ─────────────────────────────────────────────────────────
-COPY docker/nginx.conf       /etc/nginx/nginx.conf
-COPY docker/www.conf         /usr/local/etc/php-fpm.d/www.conf
-RUN mkdir -p /var/log/supervisor /run/php-fpm /var/run
+# ── Stage 4: Production image ──────────────────────────────────────────────
+FROM php-base AS production
+
+WORKDIR /app
+
+COPY . .
+COPY --from=vendor /app/vendor ./vendor
+
+# Vite output generated in the frontend stage.
+COPY --from=frontend /app/public/build ./public/build
+
+# Build Laravel's package manifest only after artisan and vendor are available.
+# Configuration caching is deliberately left for runtime/deployment so Coolify's
+# runtime environment values are not frozen into the image.
+RUN php artisan package:discover --ansi \
+  && mkdir -p \
+      bootstrap/cache \
+      storage/framework/cache/data \
+      storage/framework/sessions \
+      storage/framework/views \
+      storage/logs \
+      /var/log/supervisor \
+      /run/php-fpm \
+      /var/run \
+  && chown -R www-data:www-data bootstrap/cache storage \
+  && chmod -R 775 bootstrap/cache storage
+
+# ── Runtime configuration ─────────────────────────────────────────────────
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker/supervisord.conf /etc/supervisor/supervisord.conf
-
-# ── Permissions (www-data already exists in the PHP Alpine base) ────────────
-RUN chown -R www-data:www-data app bootstrap/cache storage \
-  && chmod -R 775      storage bootstrap/cache
 
 EXPOSE 8080
 
-# Check nginx is serving — robots.txt is a real file, no PHP/DB needed.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
   CMD wget -qO- http://localhost:8080/robots.txt >/dev/null || exit 1
 
-# tini handles PID 1 signal forwarding; supervisord runs both processes.
 ENTRYPOINT ["tini", "--"]
 CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
