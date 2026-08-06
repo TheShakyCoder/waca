@@ -4,7 +4,16 @@
       "Bash(ddev artisan:*)",
       "Bash(curl:*)",
       "Bash(xargs sed -i '' 's#/admin/stats#/internal/stats#g')",
-      "Bash(ddev exec *)"
+      "Bash(ddev exec *)",
+      "WebSearch",
+      "WebFetch(domain:hub.docker.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(docker run *)",
+      "Bash(docker pull *)",
+      "Bash(docker history *)",
+      "Bash(docker inspect *)",
+      "Bash(python3 -c \"import sys,json; tags=json.load\\(sys.stdin\\); [print\\(t['name']\\) for t in tags.get\\('results',[]\\)]\")",
+      "Bash(python3 -c \"import sys,json; tags=json.load\\(sys.stdin\\); [print\\(t['name']\\) for t in sorted\\(tags.get\\('results',[]\\), key=lambda x:x['name'], reverse=True\\)[:15]]\")"
     ]
   }
 }
