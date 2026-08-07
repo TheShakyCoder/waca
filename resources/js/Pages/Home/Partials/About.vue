@@ -20,14 +20,16 @@ defineProps({
                         Built by the community,<br />for the community
                     </h2>
                     <p class="text-warm-600 leading-relaxed mb-4">
-                        Woodvale &amp; Ainsdale Community Centre is a registered charity dedicated to
-                        improving lives and strengthening the bonds that make our neighbourhood special.
-                        We believe everyone deserves a place to belong.
+                        Woodvale & Ainsdale Community Centre is a registered charity at the heart of the Woodvale and
+                        Ainsdale community. From our two welcoming community buildings, we are dedicated to bringing
+                        people together, improving wellbeing, and creating opportunities for people of all ages to
+                        connect, learn, and thrive.
                     </p>
                     <p class="text-warm-600 leading-relaxed mb-8">
-                        From our daily café and social groups to our youth programmes and support services,
-                        everything we do is driven by the needs of local people — shaped by volunteers,
-                        funded by donations, and delivered with care.
+                        Whether it's enjoying a coffee in our weekly café, joining a community group, attending an
+                        event, or accessing local support, everything we do is shaped by the needs of local people, made
+                        possible by our volunteers, and delivered with care, compassion, and a strong sense of
+                        community.
                     </p>
                     <div class="flex flex-wrap gap-3">
                         <PrimaryLink href="/services">What We Offer</PrimaryLink>
@@ -67,10 +69,10 @@ defineProps({
                 </div>
             </div>
 
-            <div class="w-full max-w-3xl mx-auto py-12 pt-24" tabindex="0" role="application" :aria-label="page.props.site.full_name + ' video'">
+            <div class="w-full max-w-3xl mx-auto py-12 pt-24" tabindex="0" role="application"
+                :aria-label="page.props.site.full_name + ' video'">
                 <div class="border border-warm-200 rounded-2xl overflow-hidden">
-                    <video class="w-full" preload="metadata" controls
-                        src="/media/VID-20181207-WA0007.mp4">
+                    <video class="w-full" preload="metadata" controls src="/media/VID-20181207-WA0007.mp4">
                     </video>
                 </div>
             </div>

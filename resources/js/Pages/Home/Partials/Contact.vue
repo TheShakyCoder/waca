@@ -42,7 +42,8 @@ defineProps({
                             ✉️</div>
                         <div>
                             <p class="font-semibold text-warm-900 text-sm">Email</p>
-                            <p class="text-warm-500 text-sm mt-0.5">{{ site.email }}</p>
+                            <a :href="`mailto:${site.email}`" class="text-warm-500 text-sm mt-0.5">{{ site.email
+                            }}</a>
                         </div>
                     </div>
                     <div class="flex items-start gap-4 p-5 bg-white rounded-2xl border border-warm-200">
@@ -52,23 +53,6 @@ defineProps({
                         <div>
                             <p class="font-semibold text-warm-900 text-sm">Opening Hours</p>
                             <p class="text-warm-500 text-sm mt-0.5" v-html="site.opening_times"></p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4 p-5 bg-white rounded-2xl border border-warm-200">
-                        <div
-                            class="w-10 h-10 bg-brand-100 rounded-xl flex items-center justify-center text-lg shrink-0">
-                            🎁</div>
-                        <div>
-                            <p class="font-semibold text-warm-900 text-sm">Amazon Wishlist</p>
-                            <p class="text-warm-500 text-sm mt-0.5">Help us by donating items we need.</p>
-                            <a href="https://www.amazon.co.uk/hz/wishlist/ls/1N50BMHQRLYJH?ref_=wl_share"
-                               target="_blank" rel="noopener noreferrer"
-                               class="inline-flex items-center gap-1.5 mt-2 text-sm font-semibold text-brand-600 hover:text-brand-800 transition-colors">
-                                View our wishlist
-                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                </svg>
-                            </a>
                         </div>
                     </div>
                 </div>

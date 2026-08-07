@@ -1,9 +1,10 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import PrimaryLink from '@/Components/PrimaryLink.vue';
 </script>
 
 <template>
-    <section class="py-20 bg-gradient-to-r from-brand-600 to-brand-700 relative overflow-hidden">
+    <section id="volunteer" class="py-20 bg-gradient-to-r from-brand-600 to-brand-700 relative overflow-hidden">
         <div class="absolute inset-0 opacity-10">
             <div class="absolute top-6 left-12 text-8xl">🌳</div>
             <div class="absolute bottom-6 right-16 text-8xl">🤲</div>
@@ -18,11 +19,15 @@ import PrimaryLink from '@/Components/PrimaryLink.vue';
                 we'd love to hear from you. No experience necessary. Just bring a smile.
             </p>
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="#contact"
+                <Link href="#contact"
                     class="px-7 py-3.5 bg-white text-brand-700 font-semibold rounded-xl hover:bg-brand-50 transition-colors shadow-lg text-sm">
                     Become a Volunteer
-                </a>
+                </Link>
                 <PrimaryLink href="#contact">Make a Donation</PrimaryLink>
+                <Link href="https://www.amazon.co.uk/hz/wishlist/ls/32ROO3639PXBS?ref_=wl_share"
+                    class="px-7 py-3.5 bg-white text-brand-700 font-semibold rounded-xl hover:bg-brand-50 transition-colors shadow-lg text-sm">
+                    Amazon Wishlist
+                </Link>
             </div>
         </div>
     </section>

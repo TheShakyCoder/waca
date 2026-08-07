@@ -24,11 +24,11 @@ onMounted(() => {
 });
 
 const methodMeta = {
-    index: { label: 'View list', colour: 'bg-sky-100 text-sky-700 border-sky-200' },
-    show: { label: 'View detail', colour: 'bg-purple-100 text-purple-700 border-purple-200' },
-    store: { label: 'Create', colour: 'bg-brand-100 text-brand-700 border-brand-200' },
-    update: { label: 'Edit', colour: 'bg-amber-100 text-amber-700 border-amber-200' },
-    destroy: { label: 'Delete', colour: 'bg-rose-100 text-rose-700 border-rose-200' },
+    index: { label: 'View list', colour: 'bg-sky-400 text-sky-700 border-sky-200' },
+    show: { label: 'View detail', colour: 'bg-purple-400 text-purple-700 border-purple-200' },
+    store: { label: 'Create', colour: 'bg-brand-400 text-brand-700 border-brand-200' },
+    update: { label: 'Edit', colour: 'bg-amber-400 text-amber-700 border-amber-200' },
+    destroy: { label: 'Delete', colour: 'bg-rose-400 text-rose-700 border-rose-200' },
 };
 
 const savedCount = computed(() =>
@@ -95,8 +95,8 @@ function submit() {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Groups :title="'Internal Routes'" :routes="internal" :form="form" :methodMeta="methodMeta" :submit="submit" />
-            <Groups :title="'Admin Routes'" :routes="admin" :form="form" :methodMeta="methodMeta" :submit="submit" />
+            <Groups :title="'Internal Routes'" :routes="internal" :form="form" :methodMeta="methodMeta"
+                :submit="submit" />
         </div>
     </AuthenticatedLayout>
 </template>
