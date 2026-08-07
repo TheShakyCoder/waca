@@ -1,29 +1,7 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link } from "@inertiajs/vue3";
 
-const news = [
-    {
-        date: '1 Apr 2026',
-        title: 'New sensory garden officially opens',
-        excerpt: 'Thanks to a generous grant and the hard work of our volunteers, the new sensory garden is now open for everyone to enjoy.',
-        tag: 'Facilities',
-        tagColor: 'bg-brand-100 text-brand-700',
-    },
-    {
-        date: '22 Mar 2026',
-        title: 'Foodbank donations up 40% this quarter',
-        excerpt: 'The Woodvale community has shown incredible generosity — over 400 families received support through our foodbank this quarter.',
-        tag: 'Support',
-        tagColor: 'bg-rose-100 text-rose-700',
-    },
-    {
-        date: '14 Mar 2026',
-        title: 'Youth football team wins regional cup',
-        excerpt: 'Huge congratulations to our Under-14s who brought home the Sefton Community Cup for the first time in 12 years!',
-        tag: 'Youth',
-        tagColor: 'bg-purple-100 text-purple-700',
-    },
-];
+const news = [];
 </script>
 
 <template>

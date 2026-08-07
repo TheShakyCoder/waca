@@ -21,7 +21,7 @@ Route::get('/', function () {
             ->first(),
         'events' => (function () {
             $from = \Carbon\Carbon::today()->startOfDay();
-            $to   = $from->copy()->addYear();
+            $to = $from->copy()->addYear();
 
             $meetings = \App\Models\Meeting::with('activity')
                 ->where(function ($q) use ($from, $to) {
@@ -29,16 +29,16 @@ Route::get('/', function () {
                 })
                 ->orWhere(function ($q) use ($from, $to) {
                     $q->whereNotNull('recurrence')
-                      ->where('starts_at', '<=', $to)
-                      ->where(function ($q2) use ($from) {
-                          $q2->whereNull('recurrence_ends_at')
-                             ->orWhere('recurrence_ends_at', '>=', $from);
-                      });
+                        ->where('starts_at', '<=', $to)
+                        ->where(function ($q2) use ($from) {
+                            $q2->whereNull('recurrence_ends_at')
+                                ->orWhere('recurrence_ends_at', '>=', $from);
+                        });
                 })
                 ->get();
 
             return $meetings
-                ->flatMap(fn ($m) => $m->occurrences($from, $to))
+                ->flatMap(fn($m) => $m->occurrences($from, $to))
                 ->sortBy('starts_at')
                 ->take(4)
                 ->values();
@@ -46,8 +46,8 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/'.env('POSTS_SLUG_PREFIX'), [PostController::class, 'index'])->name('posts.index');
-Route::get('/'.env('POSTS_SLUG_PREFIX').'/{post:slug}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/' . env('POSTS_SLUG_PREFIX'), [PostController::class, 'index'])->name('posts.index');
+Route::get('/' . env('POSTS_SLUG_PREFIX') . '/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
 Route::get('/competitions', [\App\Http\Controllers\CompetitionController::class, 'index'])->name('competitions.index');
 Route::get('/competitions/{slug}', [\App\Http\Controllers\CompetitionController::class, 'show'])->name('competitions.show');
@@ -58,12 +58,82 @@ Route::get('/api/facebook-feed', [FacebookFeedController::class, 'index'])->name
 Route::get('/calendar', [\App\Http\Controllers\CalendarController::class, 'index'])->name('calendar');
 Route::get('/meetings', [\App\Http\Controllers\CalendarController::class, 'week'])->name('meetings');
 
+Route::get('/privacy-policy', function () {
+    return Inertia::render('Policy/Show', [
+        'title' => 'Privacy Policy',
+        'intro' => 'This Privacy Policy explains how Woodvale & Ainsdale Community Association collects, uses, stores, and protects personal information when you use our website or engage with our services.',
+        'sections' => [
+            [
+                'heading' => 'What information we collect',
+                'body' => 'We may collect basic contact details, enquiry information, and technical information such as IP addresses and browser data when you visit our website or contact us.',
+            ],
+            [
+                'heading' => 'How we use your information',
+                'list' => [
+                    'To respond to enquiries and provide information about our services.',
+                    'To manage events, bookings, volunteering, and community activities.',
+                    'To improve the website and ensure it remains secure and functional.',
+                ],
+            ],
+            [
+                'heading' => 'Sharing your information',
+                'body' => 'We do not sell your personal data. We may share information with trusted service providers who support our website and communications where this is necessary to provide our services.',
+            ],
+            [
+                'heading' => 'Your choices',
+                'body' => 'You may contact us to ask for access to, correction of, or deletion of your personal information where applicable.',
+            ],
+        ],
+    ]);
+})->name('privacy.policy');
+
+Route::get('/cookie-policy', function () {
+    return Inertia::render('Policy/Show', [
+        'title' => 'Cookie Policy',
+        'intro' => 'Our website uses cookies and similar technologies to improve your browsing experience and understand how visitors use the site.',
+        'sections' => [
+            [
+                'heading' => 'What cookies we use',
+                'list' => [
+                    'Essential cookies that keep the website secure and functional.',
+                    'Preference cookies that remember your choices on the site.',
+                    'Analytics cookies that help us understand website performance and usage.',
+                ],
+            ],
+            [
+                'heading' => 'Managing cookies',
+                'body' => 'Most browsers allow you to manage or disable cookies through your settings. Disabling some cookies may affect the functionality of parts of the website.',
+            ],
+        ],
+    ]);
+})->name('cookie.policy');
+
+Route::get('/terms-of-use', function () {
+    return Inertia::render('Policy/Show', [
+        'title' => 'Terms of Use',
+        'intro' => 'These Terms of Use set out the conditions for using our website and the information and services available through it.',
+        'sections' => [
+            [
+                'heading' => 'Use of the website',
+                'body' => 'You may use this website for lawful purposes only and should not interfere with its operation, security, or content.',
+            ],
+            [
+                'heading' => 'Intellectual property',
+                'body' => 'All website content, branding, and materials are owned by Woodvale & Ainsdale Community Association unless otherwise stated.',
+            ],
+            [
+                'heading' => 'Liability',
+                'body' => 'We aim to keep the website accurate and up to date, but we cannot guarantee that all information will always be complete, current, or error-free.',
+            ],
+        ],
+    ]);
+})->name('terms.of.use');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
 
     //  INTERNAL ROUTES
     Route::get('/dashboard', function () {
@@ -104,7 +174,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 // Catch-all for dynamic page slugs — must remain last
 Route::get('/{slug}', [\App\Http\Controllers\PageController::class, 'show'])

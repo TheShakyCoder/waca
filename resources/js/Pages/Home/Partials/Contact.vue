@@ -33,7 +33,8 @@ defineProps({
                             📞</div>
                         <div>
                             <p class="font-semibold text-warm-900 text-sm">Phone</p>
-                            <p class="text-warm-500 text-sm mt-0.5">{{ site.telephone }}</p>
+                            <a :href="`tel:${site.telephone}`" class="text-warm-500 text-sm mt-0.5">{{ site.telephone
+                                }}</a>
                         </div>
                     </div>
                     <div class="flex items-start gap-4 p-5 bg-white rounded-2xl border border-warm-200">
@@ -43,7 +44,7 @@ defineProps({
                         <div>
                             <p class="font-semibold text-warm-900 text-sm">Email</p>
                             <a :href="`mailto:${site.email}`" class="text-warm-500 text-sm mt-0.5">{{ site.email
-                            }}</a>
+                                }}</a>
                         </div>
                     </div>
                     <div class="flex items-start gap-4 p-5 bg-white rounded-2xl border border-warm-200">

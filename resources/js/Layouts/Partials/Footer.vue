@@ -79,9 +79,9 @@ const page = usePage();
                 <p>&copy; Fig Limited {{ new Date().getFullYear() }}. All rights reserved.
                 </p>
                 <div class="flex gap-5">
-                    <a href="#" class="hover:text-white/70 transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white/70 transition-colors">Terms of Use</a>
-                    <a href="#" class="hover:text-white/70 transition-colors">Cookie Policy</a>
+                    <Link href="/privacy-policy" class="hover:text-white/70 transition-colors">Privacy Policy</Link>
+                    <Link href="/terms-of-use" class="hover:text-white/70 transition-colors">Terms of Use</Link>
+                    <Link href="/cookie-policy" class="hover:text-white/70 transition-colors">Cookie Policy</Link>
                 </div>
             </div>
         </div>
