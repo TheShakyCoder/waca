@@ -24,10 +24,10 @@ import PrimaryLink from '@/Components/PrimaryLink.vue';
                     Become a Volunteer
                 </Link>
                 <PrimaryLink href="#contact">Make a Donation</PrimaryLink>
-                <Link href="https://www.amazon.co.uk/hz/wishlist/ls/32ROO3639PXBS?ref_=wl_share"
+                <a href="https://www.amazon.co.uk/hz/wishlist/ls/1N50BMHQRLYJH?ref_=wl_share"
                     class="px-7 py-3.5 bg-white text-brand-700 font-semibold rounded-xl hover:bg-brand-50 transition-colors shadow-lg text-sm">
                     Amazon Wishlist
-                </Link>
+                </a>
             </div>
         </div>
     </section>
