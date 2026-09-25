@@ -76,7 +76,7 @@ const page = usePage();
 
             <div
                 class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40">
-                <p>&copy; Fig Limited {{ new Date().getFullYear() }}. All rights reserved.
+                <p>Design & Hosting by <a href="https://www.fig.ltd.uk" target="_blank">Fig Limited</a>
                 </p>
                 <div class="flex gap-5">
                     <Link href="/privacy-policy" class="hover:text-white/70 transition-colors">Privacy Policy</Link>
