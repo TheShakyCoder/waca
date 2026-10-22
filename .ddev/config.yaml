@@ -12,7 +12,6 @@ database:
 hooks:
     post-start:
         - exec: /var/www/html/.ddev/commands/web/create_testing_database.sh
-        - exec-host: docker exec ddev-operating-minio mc alias set myminio http://localhost:9000 minioadmin minioadmin && docker exec ddev-operating-minio mc mb --ignore-existing myminio/operating
 use_dns_when_possible: true
 composer_version: "2"
 web_environment:
